@@ -4,9 +4,10 @@
   ],
   "rules": {
     "color-named": "never",
-    "keyframes-name-pattern": "^[a-z][a-z0-9-]*$",
     "no-descending-specificity": null,
-    "no-duplicate-selectors": null
+    "no-duplicate-selectors": null,
+    "selector-class-pattern": null,
+    "selector-id-pattern": null
   },
   "ignoreFiles": [
     "node_modules/**/*",
