@@ -2,3 +2,14 @@ body {
     background-color: var(--color-background);
     color: var(--color-text);
 }
+
+h1 {
+    font-family: Slifted, sans-serif;
+    font-size: 48px;
+}
+
+p {
+    font-family: TikTokSans, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+}

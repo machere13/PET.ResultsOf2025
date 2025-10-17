@@ -1,0 +1,19 @@
+@font-face {
+    font-family: Slifted;
+    src: url("../assets/fonts/Slifted.woff2") format("woff2"),
+         url("../assets/fonts/Slifted.woff") format("woff"),
+         url("../assets/fonts/Slifted.otf") format("opentype"),
+         url("../assets/fonts/Slifted.ttf") format("truetype");
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: TikTokSans;
+    src: url("../assets/fonts/TikTokSans.woff2") format("woff2"),
+         url("../assets/fonts/TikTokSans.woff") format("woff"),
+         url("../assets/fonts/TikTokSans.otf") format("opentype"),
+         url("../assets/fonts/TikTokSans.ttf") format("truetype");
+    font-weight: 100 900;
+    font-style: normal;
+}
