@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+export default function squareColorChanger() {
     const squares = document.querySelectorAll('.square');
     const resultsSection = document.getElementById('section-results');
     
@@ -20,4 +20,4 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', updateSquareColors);
     window.addEventListener('resize', updateSquareColors);
     updateSquareColors();
-});
+}

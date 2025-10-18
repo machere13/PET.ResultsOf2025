@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+export default function fishEyeText() {
     const canvas = document.getElementById('fish-eye-canvas');
     const ctx = canvas.getContext('2d');
     const titleElement = document.getElementById('section-main__title');
@@ -87,4 +87,4 @@ document.addEventListener('DOMContentLoaded', function() {
     
         animate();
     });
-});
+}
