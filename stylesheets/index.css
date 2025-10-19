@@ -27,13 +27,35 @@ p {
     font-weight: 400;
 }
 
+span {
+    font-family: TikTokSans, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+}
+
 #section-main {
     display: flex;
     justify-content: center;
-    align-items: center;
     height: 100vh;
     width: 100%;
     position: relative;
+    padding: 24px 0;
+}
+
+#section-main__heading {
+    position: sticky;
+    height: 16px;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-background-white);
+    color: var(--color-background-black);
+    padding: 0 4px;
+    mix-blend-mode: difference;
 }
 
 #squares-container {
