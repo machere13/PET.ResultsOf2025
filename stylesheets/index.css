@@ -42,7 +42,7 @@ span {
     padding: 24px 0;
 }
 
-#section-main__heading {
+.section-heading {
     position: sticky;
     height: 16px;
     top: 24px;
@@ -52,9 +52,12 @@ span {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 4px;
+}
+
+#section-main__heading {
     background-color: var(--color-background-white);
     color: var(--color-background-black);
-    padding: 0 4px;
     mix-blend-mode: difference;
 }
 
@@ -95,11 +98,20 @@ footer {
 }
 
 #section-results {
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
     height: 100vh;
     width: 100%;
     background-color: var(--color-background-white);
     color: var(--color-background-black);
     border-radius: 24px 24px 0 0;
+    position: relative;
 
     --color-square: var(--color-background-black);
+}
+
+#section-results__heading {
+    background-color: var(--color-background-black);
+    color: var(--color-background-white);
 }
