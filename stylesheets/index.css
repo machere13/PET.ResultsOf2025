@@ -12,13 +12,10 @@ h1 {
     visibility: hidden;
 }
 
-#fish-eye-canvas {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    pointer-events: none;
+h2 {
+    font-family: TikTokSans, sans-serif;
+    font-size: 96px;
+    font-weight: 900;
 }
 
 p {
@@ -31,6 +28,15 @@ span {
     font-family: TikTokSans, sans-serif;
     font-size: 12px;
     font-weight: 400;
+}
+
+#fish-eye-canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    pointer-events: none;
 }
 
 #section-main {
@@ -114,4 +120,64 @@ footer {
 #section-results__heading {
     background-color: var(--color-background-black);
     color: var(--color-background-white);
+}
+
+.section-results-effect{
+    overflow: hidden;
+}
+
+.section-results-top-top, .section-results-bottom-bottom{
+    flex-grow: 0;
+    flex: 0 0 8.3333333333%;
+}
+
+.section-results-top-center, .section-results-bottom-center{
+    flex-grow: 0;
+    flex: 0 0 16.6666666667%;
+}
+
+.section-results-center{
+    flex-grow: 1;
+    flex: 1 0 50%;
+}
+
+.section-results-effect__content{
+    transform-origin: top center;
+    backface-visibility: hidden;
+    will-change: transform;
+}
+
+.section-results-top-top > .section-results-effect__content{
+    --translate-y-value: 0;
+
+    margin-top: -58.3vh;
+    transform: translate3d(0, var(--translate-y-value), 0) scaleY(4);
+}
+
+.section-results-top-center > .section-results-effect__content{
+    --translate-y-value: 0;
+
+    margin-top: -33.33vh;
+    transform: translate3d(0, var(--translate-y-value), 0) scaleY(2);
+}
+
+.section-results-center > .section-results-effect__content{
+    --translate-y-value: 0;
+
+    margin-top: -25vh;
+    transform: translate3d(0, var(--translate-y-value), 0) scaleY(1);
+}
+
+.section-results-bottom-center > .section-results-effect__content{
+    --translate-y-value: 0;
+
+    margin-top: -149.8vh;
+    transform: translate3d(0, var(--translate-y-value), 0) scaleY(2);
+}
+
+.section-results-bottom-bottom > .section-results-effect__content{
+    --translate-y-value: 0;
+
+    margin-top: -333vh;
+    transform: translate3d(0, var(--translate-y-value), 0) scaleY(4);
 }
