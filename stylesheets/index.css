@@ -78,6 +78,7 @@ span {
     height: 100%;
     z-index: 3;
     padding: 24px 12px;
+    pointer-events: none;
 }
 
 .squares-line {
@@ -101,6 +102,28 @@ footer {
     justify-content: center;
     align-items: center;
     width: 100%;
+    cursor: pointer;
+    padding: 2rem 0;
+}
+
+footer pre {
+    white-space: pre-wrap;
+    text-align: center;
+    font-family: TikTokSans, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+footer pre div {
+    display: block;
+    white-space: pre-wrap;
+}
+
+footer pre span {
+    display: inline;
+    white-space: normal;
 }
 
 #section-results {
@@ -120,64 +143,4 @@ footer {
 #section-results__heading {
     background-color: var(--color-background-black);
     color: var(--color-background-white);
-}
-
-.section-results-effect{
-    overflow: hidden;
-}
-
-.section-results-top-top, .section-results-bottom-bottom{
-    flex-grow: 0;
-    flex: 0 0 8.3333333333%;
-}
-
-.section-results-top-center, .section-results-bottom-center{
-    flex-grow: 0;
-    flex: 0 0 16.6666666667%;
-}
-
-.section-results-center{
-    flex-grow: 1;
-    flex: 1 0 50%;
-}
-
-.section-results-effect__content{
-    transform-origin: top center;
-    backface-visibility: hidden;
-    will-change: transform;
-}
-
-.section-results-top-top > .section-results-effect__content{
-    --translate-y-value: 0;
-
-    margin-top: -58.3vh;
-    transform: translate3d(0, var(--translate-y-value), 0) scaleY(4);
-}
-
-.section-results-top-center > .section-results-effect__content{
-    --translate-y-value: 0;
-
-    margin-top: -33.33vh;
-    transform: translate3d(0, var(--translate-y-value), 0) scaleY(2);
-}
-
-.section-results-center > .section-results-effect__content{
-    --translate-y-value: 0;
-
-    margin-top: -25vh;
-    transform: translate3d(0, var(--translate-y-value), 0) scaleY(1);
-}
-
-.section-results-bottom-center > .section-results-effect__content{
-    --translate-y-value: 0;
-
-    margin-top: -149.8vh;
-    transform: translate3d(0, var(--translate-y-value), 0) scaleY(2);
-}
-
-.section-results-bottom-bottom > .section-results-effect__content{
-    --translate-y-value: 0;
-
-    margin-top: -333vh;
-    transform: translate3d(0, var(--translate-y-value), 0) scaleY(4);
 }
