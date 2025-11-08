@@ -164,9 +164,17 @@ footer pre span {
 }
 
 #section-results__content-heading {
-    white-space: nowrap;
-    flex-shrink: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
     margin: 0;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.section-results__count, .section-results__count-label {
+    font-size: 120px;
+    letter-spacing: -0.04em;
 }
 
 .section-results__rectangle {
