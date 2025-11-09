@@ -130,12 +130,12 @@ footer pre span {
 #section-results {
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    padding: 24px 24px 48px;
     height: 100vh;
     width: 100%;
     background-color: var(--color-background-white);
     color: var(--color-background-black);
-    border-radius: 24px 24px 0 0;
+    border-radius: 24px;
     position: relative;
 
     --color-square: var(--color-background-black);
