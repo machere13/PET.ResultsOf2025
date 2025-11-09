@@ -33,7 +33,7 @@ const formatDate = (date) => {
 
 const normalizeResponse = (payload) => {
     if (!payload) {
-        throw new Error('empty payload');
+        return { days: [], total: 0, max: 0 };
     }
     const collectDays = (weeks) => {
         const buffer = [];
@@ -52,11 +52,11 @@ const normalizeResponse = (payload) => {
         const targetYearEntry =
             payload.years.find((yearEntry) => Number(yearEntry.year) === TARGET_YEAR) ?? payload.years[0];
         if (!targetYearEntry) {
-            throw new Error('no years data');
+            return { days: [], total: 0, max: 0 };
         }
         rawDays = collectDays(targetYearEntry.weeks ?? []);
     } else {
-        throw new Error('unsupported payload shape');
+        return { days: [], total: 0, max: 0 };
     }
     const filtered = rawDays.filter((day) => isTargetYear(day?.date));
     const total = filtered.reduce((acc, day) => acc + (day.count ?? 0), 0);
@@ -185,7 +185,7 @@ const applyColumns = (element, count) => {
 const fetchContributions = async (username) => {
     const response = await fetch(`${API_BASE}${encodeURIComponent(username)}?y=${TARGET_YEAR}`);
     if (!response.ok) {
-        throw new Error(`request failed with ${response.status}`);
+        return null;
     }
     return response.json();
 };
@@ -203,19 +203,17 @@ const initGithubHeatmap = async () => {
     if (!gridContainer) {
         return;
     }
-    try {
-        const raw = await fetchContributions(username);
-        const { days, max } = normalizeResponse(raw);
-        const weeks = buildCalendarWeeks(days, max);
-        if (!weeks.length) {
-            throw new Error('no weeks');
-        }
-        applyColumns(gridContainer, weeks.length);
-        renderGrid(gridContainer, weeks, max);
-    } catch (error) {
-        console.error('github heatmap', error);
+    const raw = await fetchContributions(username);
+    if (!raw) {
+        return;
     }
+    const { days, max } = normalizeResponse(raw);
+    const weeks = buildCalendarWeeks(days, max);
+    if (!weeks.length) {
+        return;
+    }
+    applyColumns(gridContainer, weeks.length);
+    renderGrid(gridContainer, weeks, max);
 };
 
 export default initGithubHeatmap;
-
