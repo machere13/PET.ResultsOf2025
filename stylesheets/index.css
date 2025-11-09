@@ -278,61 +278,37 @@ footer pre span {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    max-width: 960px;
     width: 100%;
-    margin: 0 auto;
-    align-items: center;
-}
-
-.section-activity__header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.section-activity__meta {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: 0;
+    align-items: stretch;
 }
 
 .section-activity__grid {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: repeat(53, minmax(12px, 1fr));
-    grid-template-rows: repeat(7, 12px);
+    grid-template-rows: repeat(7, minmax(12px, 1fr));
     gap: 4px;
+    width: 80%;
     margin: 0 auto;
 }
 
 .section-activity__cell {
     width: 100%;
-    height: 12px;
-    border-radius: 2px;
-    background-color: rgb(255 255 255 / 8%);
+    aspect-ratio: 1 / 1;
+    height: auto;
+    border-radius: 4px;
+    background-color: rgb(255 255 255 / 6%);
     transition: transform 0.2s ease, outline-color 0.2s ease;
 }
 
 .section-activity__cell:hover {
     transform: scale(1.2);
     outline: 1px solid rgb(255 255 255 / 40%);
-    outline-offset: 2px;
+    outline-offset: 3px;
 }
 
 .section-activity__cell--outside {
     visibility: hidden;
     pointer-events: none;
-}
-
-@media (width <= 768px) {
-    #section-activity {
-        padding: 48px 16px 96px;
-    }
-
-    .section-activity__grid {
-        grid-template-columns: repeat(53, minmax(10px, 1fr));
-        grid-template-rows: repeat(7, 10px);
-        gap: 3px;
-    }
 }

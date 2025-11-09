@@ -1,4 +1,10 @@
-const COLOR_SCALE = ['rgb(255 255 255 / 8%)', '#0e4429', '#006d32', '#26a641', '#39d353'];
+const COLOR_SCALE = [
+    'rgb(255 255 255 / 6%)',
+    'rgb(255 255 255 / 16%)',
+    'rgb(255 255 255 / 32%)',
+    'rgb(255 255 255 / 64%)',
+    'rgb(255 255 255 / 80%)'
+];
 const API_BASE = 'https://github-contributions-api.jogruber.de/v4/';
 const TARGET_YEAR = 2025;
 
@@ -176,17 +182,6 @@ const applyColumns = (element, count) => {
     element.style.gridTemplateColumns = `repeat(${count}, minmax(12px, 1fr))`;
 };
 
-const updateTotal = (element, total, weeks) => {
-    if (!weeks.length) {
-        element.textContent = '0 контрибьютов · 2025';
-        return;
-    }
-    const rangeStart = createUTCDate(TARGET_YEAR, 0, 1);
-    const rangeEnd = createUTCDate(TARGET_YEAR, 11, 31);
-    const formattedRange = `${formatDate(rangeStart)} — ${formatDate(rangeEnd)}`;
-    element.textContent = `${total} контрибьютов · ${formattedRange}`;
-};
-
 const fetchContributions = async (username) => {
     const response = await fetch(`${API_BASE}${encodeURIComponent(username)}?y=${TARGET_YEAR}`);
     if (!response.ok) {
@@ -205,25 +200,19 @@ const initGithubHeatmap = async () => {
         return;
     }
     const gridContainer = document.getElementById('github-heatmap-grid');
-    const totalElement = document.getElementById('section-activity__total');
-    const errorElement = document.getElementById('github-heatmap-error');
-    if (!gridContainer || !totalElement || !errorElement) {
+    if (!gridContainer) {
         return;
     }
-    errorElement.hidden = true;
     try {
         const raw = await fetchContributions(username);
-        const { days, total, max } = normalizeResponse(raw);
+        const { days, max } = normalizeResponse(raw);
         const weeks = buildCalendarWeeks(days, max);
         if (!weeks.length) {
             throw new Error('no weeks');
         }
         applyColumns(gridContainer, weeks.length);
         renderGrid(gridContainer, weeks, max);
-        updateTotal(totalElement, total, weeks);
     } catch (error) {
-        errorElement.hidden = false;
-        totalElement.textContent = '–';
         console.error('github heatmap', error);
     }
 };
