@@ -71,7 +71,7 @@ const pickColor = (count, max) => {
     const ratio = count / max;
     const index = Math.min(
         COLOR_SCALE.length - 1,
-        Math.max(1, Math.ceil(ratio * (COLOR_SCALE.length - 1)))
+        Math.max(1, Math.ceil(1.2*ratio * (COLOR_SCALE.length - 1)))
     );
     return COLOR_SCALE[index];
 };
