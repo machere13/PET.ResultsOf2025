@@ -1,3 +1,5 @@
+import { applyStatisticsValues } from './statistics-updater.js';
+
 const COLOR_SCALE = [
     'rgb(255 255 255 / 6%)',
     'rgb(255 255 255 / 16%)',
@@ -7,7 +9,6 @@ const COLOR_SCALE = [
 ];
 const API_BASE = 'https://github-contributions-api.jogruber.de/v4/';
 const TARGET_YEAR = 2025;
-const numberFormatter = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
 
 const parseDate = (value) => {
     if (!value) {
@@ -188,26 +189,6 @@ const countActiveDays = (days) => {
     }, 0);
 };
 
-const formatNumber = (value) => {
-    if (typeof value !== 'number' || Number.isNaN(value) || !Number.isFinite(value)) {
-        return '0';
-    }
-    return numberFormatter.format(Math.max(0, Math.trunc(value)));
-};
-
-const updateStatistics = (stats) => {
-    if (!stats) {
-        return;
-    }
-    Object.entries(stats).forEach(([key, value]) => {
-        const element = document.querySelector(`[data-statistics-value="${key}"]`);
-        if (!element) {
-            return;
-        }
-        element.textContent = formatNumber(value);
-    });
-};
-
 const renderGrid = (container, weeks, max) => {
     container.innerHTML = '';
     const fragment = document.createDocumentFragment();
@@ -272,7 +253,7 @@ const initGithubHeatmap = async () => {
     applyColumns(gridContainer, weeks.length);
     renderGrid(gridContainer, weeks, max);
     const calendarDays = flattenCalendarDays(weeks);
-    updateStatistics({
+    applyStatisticsValues({
         total: total,
         'longest-streak': calculateLongestStreak(calendarDays),
         'active-days': countActiveDays(calendarDays),
