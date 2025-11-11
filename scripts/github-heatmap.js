@@ -7,6 +7,7 @@ const COLOR_SCALE = [
 ];
 const API_BASE = 'https://github-contributions-api.jogruber.de/v4/';
 const TARGET_YEAR = 2025;
+const numberFormatter = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
 
 const parseDate = (value) => {
     if (!value) {
@@ -151,6 +152,62 @@ const buildCalendarWeeks = (days, max) => {
     return weeks;
 };
 
+const flattenCalendarDays = (weeks) => {
+    const buffer = [];
+    weeks.forEach((week) => {
+        const days = Array.isArray(week.days) ? week.days : [];
+        days.forEach((day) => {
+            if (day?.inYear) {
+                buffer.push(day);
+            }
+        });
+    });
+    return buffer;
+};
+
+const calculateLongestStreak = (days) => {
+    let longest = 0;
+    let current = 0;
+    days.forEach((day) => {
+        const hasContributions = (day?.count ?? 0) > 0;
+        if (hasContributions) {
+            current += 1;
+            if (current > longest) {
+                longest = current;
+            }
+        } else {
+            current = 0;
+        }
+    });
+    return longest;
+};
+
+const countActiveDays = (days) => {
+    return days.reduce((acc, day) => {
+        return acc + ((day?.count ?? 0) > 0 ? 1 : 0);
+    }, 0);
+};
+
+const formatNumber = (value) => {
+    if (typeof value !== 'number' || Number.isNaN(value) || !Number.isFinite(value)) {
+        return '0';
+    }
+    return numberFormatter.format(Math.max(0, Math.trunc(value)));
+};
+
+const updateStatistics = (stats) => {
+    if (!stats) {
+        return;
+    }
+    Object.entries(stats).forEach(([key, value]) => {
+        const element = document.querySelector(`[data-statistics-value="${key}"]`);
+        if (!element) {
+            return;
+        }
+        element.textContent = formatNumber(value);
+    });
+};
+
 const renderGrid = (container, weeks, max) => {
     container.innerHTML = '';
     const fragment = document.createDocumentFragment();
@@ -207,13 +264,20 @@ const initGithubHeatmap = async () => {
     if (!raw) {
         return;
     }
-    const { days, max } = normalizeResponse(raw);
+    const { days, total, max } = normalizeResponse(raw);
     const weeks = buildCalendarWeeks(days, max);
     if (!weeks.length) {
         return;
     }
     applyColumns(gridContainer, weeks.length);
     renderGrid(gridContainer, weeks, max);
+    const calendarDays = flattenCalendarDays(weeks);
+    updateStatistics({
+        total: total,
+        'longest-streak': calculateLongestStreak(calendarDays),
+        'active-days': countActiveDays(calendarDays),
+        'max-per-day': max
+    });
 };
 
 export default initGithubHeatmap;
