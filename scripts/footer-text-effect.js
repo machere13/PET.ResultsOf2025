@@ -1,6 +1,16 @@
 const NBSP = '\u00A0';
 const applyChar = (value) => (value === ' ' || value === '' || value === undefined ? NBSP : value);
 
+const padLine = (line, targetLength) => {
+    if (targetLength <= line.length) {
+        return line;
+    }
+    const diff = targetLength - line.length;
+    const startPad = Math.floor(diff / 2);
+    const endPad = diff - startPad;
+    return `${' '.repeat(startPad)}${line}${' '.repeat(endPad)}`;
+};
+
 const normalizeLines = (original, alternate) => {
     const result = [];
     const maxLines = Math.max(original.length, alternate.length);
@@ -8,11 +18,13 @@ const normalizeLines = (original, alternate) => {
         const originalLine = original[lineIndex] ?? '';
         const alternateLine = alternate[lineIndex] ?? '';
         const maxLength = Math.max(originalLine.length, alternateLine.length);
+        const normalizedOriginal = padLine(originalLine, maxLength);
+        const normalizedAlternate = padLine(alternateLine, maxLength);
         const originalChars = [];
         const alternateChars = [];
         for (let charIndex = 0; charIndex < maxLength; charIndex += 1) {
-            originalChars.push(originalLine[charIndex] ?? ' ');
-            alternateChars.push(alternateLine[charIndex] ?? ' ');
+            originalChars.push(normalizedOriginal[charIndex] ?? ' ');
+            alternateChars.push(normalizedAlternate[charIndex] ?? ' ');
         }
         result.push({ originalChars, alternateChars });
     }
