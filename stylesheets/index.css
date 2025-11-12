@@ -108,6 +108,7 @@ span {
 }
 
 #section-results {
+    cursor: var(--cursor-dark);
     display: flex;
     flex-direction: column;
     padding: 24px 24px 48px;
@@ -119,8 +120,6 @@ span {
     position: relative;
 
     --color-square: var(--color-background-black);
-
-    cursor: var(--cursor-dark);
 }
 
 #section-results * {
@@ -293,13 +292,15 @@ span {
     height: auto;
     border-radius: 4px;
     background-color: rgb(255 255 255 / 6%);
-    transition: transform 0.2s ease, outline-color 0.2s ease;
+    transition: transform 0.2s ease, outline-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.section-activity__cell:hover {
+.section-activity__cell:hover,
+.section-activity__cell--active {
     transform: scale(1.2);
     outline: 1px solid rgb(255 255 255 / 40%);
     outline-offset: 3px;
+    box-shadow: 0 8px 26px rgb(0 0 0 / 35%);
 }
 
 .section-activity__cell--outside {
@@ -369,6 +370,54 @@ span {
 
 .section-statistics__content-item span{
     mix-blend-mode: difference;
+}
+
+.section-activity__tooltip {
+    position: fixed;
+    pointer-events: none;
+    transform: translateY(6px) scale(0.96);
+    opacity: 0;
+    padding: 12px;
+    backdrop-filter: blur(18px);
+    background: rgb(0 0 0 / 92%);
+    color: rgb(255 255 255 / 96%);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 164px;
+    box-shadow: 0 18px 48px rgb(0 0 0 / 55%);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    font-family: TikTokSans, sans-serif;
+    z-index: 20;
+    will-change: transform, opacity;
+}
+
+.section-activity__tooltip--visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.section-activity__tooltip-count {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+}
+
+.section-activity__tooltip-label {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 42%);
+}
+
+.section-activity__tooltip-date {
+    font-size: 12px;
+    color: rgb(255 255 255 / 60%);
+    margin-top: 4px;
+}
+
+.section-activity__tooltip--empty .section-activity__tooltip-label {
+    color: rgb(255 255 255 / 22%);
 }
 
 footer {
