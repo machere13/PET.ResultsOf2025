@@ -1,8 +1,17 @@
+:root {
+    --cursor-light: url('../assets/cursors/custom-pointer.svg') 4 4, auto;
+    --cursor-dark: url('../assets/cursors/custom-pointer-dark.svg') 4 4, auto;
+}
+
 html, body {
     background-color: var(--color-background-black);
     color: var(--color-text);
     scrollbar-width: none;
     -ms-overflow-style: none;
+}
+
+body {
+    cursor: var(--cursor-light);
 }
 
 h1 {
@@ -110,6 +119,12 @@ span {
     position: relative;
 
     --color-square: var(--color-background-black);
+
+    cursor: var(--cursor-dark);
+}
+
+#section-results * {
+    cursor: var(--cursor-dark);
 }
 
 #section-results__heading {
@@ -361,7 +376,6 @@ footer {
     justify-content: center;
     align-items: center;
     width: 100%;
-    cursor: pointer;
     padding: 24px 0;
     z-index: 3;
     position: relative;
