@@ -1,173 +1,107 @@
+const NBSP = '\u00A0';
+const applyChar = (value) => (value === ' ' || value === '' || value === undefined ? NBSP : value);
+
+const normalizeLines = (original, alternate) => {
+    const result = [];
+    const maxLines = Math.max(original.length, alternate.length);
+    for (let lineIndex = 0; lineIndex < maxLines; lineIndex += 1) {
+        const originalLine = original[lineIndex] ?? '';
+        const alternateLine = alternate[lineIndex] ?? '';
+        const maxLength = Math.max(originalLine.length, alternateLine.length);
+        const originalChars = [];
+        const alternateChars = [];
+        for (let charIndex = 0; charIndex < maxLength; charIndex += 1) {
+            originalChars.push(originalLine[charIndex] ?? ' ');
+            alternateChars.push(alternateLine[charIndex] ?? ' ');
+        }
+        result.push({ originalChars, alternateChars });
+    }
+    return result;
+};
+
+const buildStructure = (container, blueprint) => {
+    container.innerHTML = '';
+    const spans = [];
+    blueprint.forEach(({ originalChars, alternateChars }) => {
+        const lineDiv = document.createElement('div');
+        lineDiv.style.display = 'block';
+        lineDiv.style.textAlign = 'center';
+        originalChars.forEach((char, index) => {
+            const span = document.createElement('span');
+            span.style.display = 'inline-block';
+            span.style.transition = 'opacity 0.18s ease';
+            span.style.willChange = 'opacity';
+            const originalChar = char ?? ' ';
+            const alternateChar = alternateChars[index] ?? ' ';
+            span.dataset.originalChar = originalChar;
+            span.dataset.alternateChar = alternateChar;
+            span.dataset.currentChar = originalChar;
+            span.textContent = applyChar(originalChar);
+            spans.push(span);
+            lineDiv.appendChild(span);
+        });
+        container.appendChild(lineDiv);
+    });
+    return spans;
+};
+
 export default function footerTextEffect() {
     const footer = document.querySelector('footer');
-    if (!footer) return;
-
+    if (!footer) {
+        return;
+    }
     const preElements = footer.querySelectorAll('pre');
-    if (preElements.length < 2) return;
-
+    if (preElements.length < 2) {
+        return;
+    }
     const firstText = preElements[0];
     const secondText = preElements[1];
-
-    const firstTextContent = firstText.textContent;
-    const secondTextContent = secondText.textContent;
-
+    const firstLines = firstText.textContent.split(/\r?\n/);
+    const secondLines = secondText.textContent.split(/\r?\n/);
     secondText.style.display = 'none';
-
-    function splitIntoLines(text) {
-        return text.split(/\r?\n/);
-    }
-
-    const firstLines = splitIntoLines(firstTextContent);
-    const secondLines = splitIntoLines(secondTextContent);
-
-    function createStructure(container, lines) {
-        container.innerHTML = '';
-        lines.forEach((line) => {
-            const lineDiv = document.createElement('div');
-            lineDiv.style.display = 'block';
-            
-            const chars = Array.from(line);
-            chars.forEach((char) => {
-                const span = document.createElement('span');
-                span.textContent = char === ' ' ? '\u00A0' : char;
-                span.style.transition = 'opacity 0.1s ease';
-                span.style.display = 'inline';
-                lineDiv.appendChild(span);
-            });
-            
-            container.appendChild(lineDiv);
-        });
-    }
-
-    createStructure(firstText, firstLines);
-
-    let isAnimating = false;
+    const blueprint = normalizeLines(firstLines, secondLines);
+    const spans = buildStructure(firstText, blueprint);
+    let activeTarget = 'originalChar';
     let timeoutIds = [];
-
-    function clearAnimation() {
-        timeoutIds.forEach(id => clearTimeout(id));
+    const clearAnimation = () => {
+        timeoutIds.forEach((id) => clearTimeout(id));
         timeoutIds = [];
-        isAnimating = false;
-    }
-
-    function startReplaceAnimation() {
-        clearAnimation();
-        isAnimating = true;
-
-        const firstLineDivs = firstText.querySelectorAll('div');
-        
-        firstLineDivs.forEach((lineDiv, lineIndex) => {
-            const firstLineSpans = lineDiv.querySelectorAll('span');
-            const secondLine = secondLines[lineIndex] || '';
-            const secondLineChars = Array.from(secondLine);
-
-            firstLineSpans.forEach((span, charIndex) => {
-                if (charIndex < secondLineChars.length) {
-                    const newChar = secondLineChars[charIndex];
-                    const hasDelay = Math.random() < 0.3;
-                    const delay = hasDelay ? Math.random() * 150 : 0;
-                    
-                    const timeoutId1 = setTimeout(() => {
-                        if (!isAnimating) return;
-                        span.style.opacity = '0';
-                        const timeoutId2 = setTimeout(() => {
-                            if (!isAnimating) return;
-                            span.textContent = newChar === ' ' ? '\u00A0' : newChar;
-                            span.style.opacity = '1';
-                        }, 50);
-                        timeoutIds.push(timeoutId2);
-                    }, delay);
-                    timeoutIds.push(timeoutId1);
-                } else {
-                    const hasDelay = Math.random() < 0.3;
-                    const delay = hasDelay ? Math.random() * 150 : 0;
-                    const timeoutId = setTimeout(() => {
-                        if (!isAnimating) return;
-                        span.style.opacity = '0';
-                    }, delay);
-                    timeoutIds.push(timeoutId);
-                }
-            });
-
-            if (secondLineChars.length > firstLineSpans.length) {
-                for (let i = firstLineSpans.length; i < secondLineChars.length; i++) {
-                    const newChar = secondLineChars[i];
-                    const hasDelay = Math.random() < 0.3;
-                    const delay = hasDelay ? Math.random() * 150 : 0;
-                    
-                    const timeoutId1 = setTimeout(() => {
-                        if (!isAnimating) return;
-                        const span = document.createElement('span');
-                        span.style.transition = 'opacity 0.1s ease';
-                        span.style.display = 'inline';
-                        span.style.opacity = '0';
-                        span.textContent = newChar === ' ' ? '\u00A0' : newChar;
-                        
-                        lineDiv.appendChild(span);
-                        const timeoutId2 = setTimeout(() => {
-                            if (!isAnimating) return;
-                            span.style.opacity = '1';
-                        }, 50);
-                        timeoutIds.push(timeoutId2);
-                    }, delay);
-                    timeoutIds.push(timeoutId1);
-                }
-            }
-        });
-
-        if (secondLines.length > firstLineDivs.length) {
-            for (let i = firstLineDivs.length; i < secondLines.length; i++) {
-                const newLine = secondLines[i];
-                const newLineChars = Array.from(newLine);
-                
-                const timeoutId = setTimeout(() => {
-                    if (!isAnimating) return;
-                    const lineDiv = document.createElement('div');
-                    lineDiv.style.display = 'block';
-                    lineDiv.style.opacity = '0';
-                    
-                    newLineChars.forEach((char) => {
-                        const span = document.createElement('span');
-                        span.textContent = char === ' ' ? '\u00A0' : char;
-                        span.style.transition = 'opacity 0.1s ease';
-                        span.style.display = 'inline';
-                        span.style.opacity = '0';
-                        lineDiv.appendChild(span);
-                    });
-                    
-                    firstText.appendChild(lineDiv);
-                    setTimeout(() => {
-                        lineDiv.style.opacity = '1';
-                        const spans = lineDiv.querySelectorAll('span');
-                        spans.forEach(span => {
-                            span.style.opacity = '1';
-                        });
-                    }, 50);
-                }, i * 50);
-                timeoutIds.push(timeoutId);
-            }
+    };
+    const animateTo = (targetKey) => {
+        if (activeTarget === targetKey) {
+            return;
         }
-
-        const timeoutId = setTimeout(() => {
-            if (!isAnimating) return;
-            
-            createStructure(firstText, secondLines);
-            
-            isAnimating = false;
-        }, 400);
-        timeoutIds.push(timeoutId);
-    }
-
-    function startReverseAnimation() {
         clearAnimation();
-        firstText.style.transition = 'opacity 0.2s ease';
-        firstText.style.opacity = '0';
-        setTimeout(() => {
-            createStructure(firstText, firstLines);
-            firstText.style.opacity = '1';
-        }, 200);
-    }
-
-    footer.addEventListener('mouseenter', startReplaceAnimation);
-    footer.addEventListener('mouseleave', startReverseAnimation);
+        activeTarget = targetKey;
+        spans.forEach((span) => {
+            const targetChar = span.dataset[targetKey] ?? ' ';
+            if (span.dataset.currentChar === targetChar) {
+                return;
+            }
+            const hasDelay = Math.random() < 0.35;
+            const delay = hasDelay ? Math.random() * 160 : 0;
+            const timeoutId = setTimeout(() => {
+                if (activeTarget !== targetKey) {
+                    return;
+                }
+                span.style.opacity = '0';
+                const innerId = setTimeout(() => {
+                    if (activeTarget !== targetKey) {
+                        return;
+                    }
+                    span.textContent = applyChar(targetChar);
+                    span.dataset.currentChar = targetChar;
+                    span.style.opacity = '1';
+                }, 90);
+                timeoutIds.push(innerId);
+            }, delay);
+            timeoutIds.push(timeoutId);
+        });
+    };
+    footer.addEventListener('mouseenter', () => {
+        animateTo('alternateChar');
+    });
+    footer.addEventListener('mouseleave', () => {
+        animateTo('originalChar');
+    });
 }

@@ -362,7 +362,7 @@ footer {
     align-items: center;
     width: 100%;
     cursor: pointer;
-    padding: 2rem 0;
+    padding: 24px 0;
     z-index: 3;
     position: relative;
 }
