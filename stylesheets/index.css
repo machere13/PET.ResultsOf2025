@@ -98,35 +98,6 @@ span {
     animation: square-spin 1s linear infinite;
 }
 
-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    cursor: pointer;
-    padding: 2rem 0;
-}
-
-footer pre {
-    white-space: pre-wrap;
-    text-align: center;
-    font-family: TikTokSans, sans-serif;
-    font-size: 12px;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-}
-
-footer pre div {
-    display: block;
-    white-space: pre-wrap;
-}
-
-footer pre span {
-    display: inline;
-    white-space: normal;
-}
-
 #section-results {
     display: flex;
     flex-direction: column;
@@ -383,4 +354,35 @@ footer pre span {
 
 .section-statistics__content-item span{
     mix-blend-mode: difference;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    padding: 2rem 0;
+    z-index: 3;
+    position: relative;
+}
+
+footer pre {
+    white-space: pre-wrap;
+    text-align: center;
+    font-family: TikTokSans, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+footer pre div {
+    display: block;
+    white-space: pre-wrap;
+}
+
+footer pre span {
+    display: inline;
+    white-space: normal;
 }
