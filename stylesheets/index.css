@@ -214,6 +214,8 @@ span {
     display: flex;
     align-items: center;
     gap: 16px;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 #section-results.is-visible-entities .section-results__content-rectangle {
