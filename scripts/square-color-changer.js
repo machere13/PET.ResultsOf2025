@@ -1,26 +1,31 @@
+const DEFAULT_COLOR = 'var(--color-background-white)';
+const SECTION_CONFIG = [
+    {
+        id: 'section-results',
+        color: 'var(--color-background-black)'
+    },
+    {
+        id: 'section-activity',
+        color: 'var(--color-background-white)'
+    },
+    {
+        id: 'section-statistics',
+        color: 'var(--color-background-white)'
+    }
+];
+
 export default function squareColorChanger() {
     const squares = Array.from(document.querySelectorAll('.square'));
     if (!squares.length) {
         return;
     }
-    const sections = [
-        {
-            element: document.getElementById('section-results'),
-            color: 'var(--color-background-black)'
-        },
-        {
-            element: document.getElementById('section-activity'),
-            color: 'var(--color-background-white)'
-        },
-        {
-            element: document.getElementById('section-statistics'),
-            color: 'var(--color-background-white)'
-        }
-    ].filter((entry) => entry.element);
+    const sections = SECTION_CONFIG.map((config) => ({
+        element: document.getElementById(config.id),
+        color: config.color
+    })).filter((entry) => entry.element);
     if (!sections.length) {
         return;
     }
-    const defaultColor = 'var(--color-background-white)';
     const computeSectionTops = () => {
         return sections.map((entry) => ({
             top: entry.element.getBoundingClientRect().top + window.scrollY,
@@ -29,7 +34,7 @@ export default function squareColorChanger() {
     };
     let sectionPositions = computeSectionTops();
     const resolveColor = (absoluteY) => {
-        let color = defaultColor;
+        let color = DEFAULT_COLOR;
         for (let i = 0; i < sectionPositions.length; i += 1) {
             if (absoluteY >= sectionPositions[i].top) {
                 color = sectionPositions[i].color;
@@ -47,7 +52,17 @@ export default function squareColorChanger() {
             square.style.backgroundColor = resolveColor(centerY);
         });
     };
-    window.addEventListener('scroll', updateSquareColors, { passive: true });
-    window.addEventListener('resize', updateSquareColors);
+    const handleScroll = () => {
+        updateSquareColors();
+    };
+    const handleResize = () => {
+        updateSquareColors();
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
     updateSquareColors();
+    return () => {
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleResize);
+    };
 }

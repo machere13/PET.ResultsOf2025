@@ -1,8 +1,11 @@
 const STAT_SELECTOR = '[data-statistics-value]';
 const TARGET_DATA_KEY = 'statisticsTarget';
 const ITEM_SELECTOR = '.section-statistics__content-item';
+const ANIMATION_DURATION = 1200;
+const INTERSECTION_THRESHOLDS = [0.35, 0.5, 0.75];
+const VISIBILITY_RATIO_THRESHOLD = 0.5;
+
 const formatter = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
-const animationDuration = 1200;
 let elementsByKey;
 let observer;
 const containerState = new WeakMap();
@@ -39,7 +42,7 @@ const animateElement = (element, target) => {
         if (!startTimestamp) {
             startTimestamp = timestamp;
         }
-        const progress = Math.min((timestamp - startTimestamp) / animationDuration, 1);
+        const progress = Math.min((timestamp - startTimestamp) / ANIMATION_DURATION, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
         const current = Math.round(finalValue * eased);
         element.textContent = formatValue(current);
@@ -76,7 +79,7 @@ const isElementVisibleEnough = (element) => {
     const visibleBottom = Math.min(rect.bottom, viewportHeight);
     const visibleHeight = Math.max(0, visibleBottom - visibleTop);
     const ratio = visibleHeight / rect.height;
-    return ratio >= 0.5;
+    return ratio >= VISIBILITY_RATIO_THRESHOLD;
 };
 
 const handleIntersections = (entries) => {
@@ -93,7 +96,7 @@ const ensureObserver = () => {
     }
     if (!observer) {
         observer = new IntersectionObserver(handleIntersections, {
-            threshold: [0.35, 0.5, 0.75]
+            threshold: INTERSECTION_THRESHOLDS
         });
     }
     return observer;

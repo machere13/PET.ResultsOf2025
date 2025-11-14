@@ -1,4 +1,9 @@
 const NBSP = '\u00A0';
+const TRANSITION_DURATION = 180;
+const FADE_OUT_DELAY = 90;
+const RANDOM_DELAY_THRESHOLD = 0.35;
+const MAX_RANDOM_DELAY = 160;
+
 const applyChar = (value) => (value === ' ' || value === '' || value === undefined ? NBSP : value);
 
 const padLine = (line, targetLength) => {
@@ -41,7 +46,7 @@ const buildStructure = (container, blueprint) => {
         originalChars.forEach((char, index) => {
             const span = document.createElement('span');
             span.style.display = 'inline-block';
-            span.style.transition = 'opacity 0.18s ease';
+            span.style.transition = `opacity ${TRANSITION_DURATION}ms ease`;
             span.style.willChange = 'opacity';
             const originalChar = char ?? ' ';
             const alternateChar = alternateChars[index] ?? ' ';
@@ -90,8 +95,8 @@ export default function footerTextEffect() {
             if (span.dataset.currentChar === targetChar) {
                 return;
             }
-            const hasDelay = Math.random() < 0.35;
-            const delay = hasDelay ? Math.random() * 160 : 0;
+            const hasDelay = Math.random() < RANDOM_DELAY_THRESHOLD;
+            const delay = hasDelay ? Math.random() * MAX_RANDOM_DELAY : 0;
             const timeoutId = setTimeout(() => {
                 if (activeTarget !== targetKey) {
                     return;
@@ -104,16 +109,23 @@ export default function footerTextEffect() {
                     span.textContent = applyChar(targetChar);
                     span.dataset.currentChar = targetChar;
                     span.style.opacity = '1';
-                }, 90);
+                }, FADE_OUT_DELAY);
                 timeoutIds.push(innerId);
             }, delay);
             timeoutIds.push(timeoutId);
         });
     };
-    footer.addEventListener('mouseenter', () => {
+    const handleMouseEnter = () => {
         animateTo('alternateChar');
-    });
-    footer.addEventListener('mouseleave', () => {
+    };
+    const handleMouseLeave = () => {
         animateTo('originalChar');
-    });
+    };
+    footer.addEventListener('mouseenter', handleMouseEnter);
+    footer.addEventListener('mouseleave', handleMouseLeave);
+    return () => {
+        clearAnimation();
+        footer.removeEventListener('mouseenter', handleMouseEnter);
+        footer.removeEventListener('mouseleave', handleMouseLeave);
+    };
 }
