@@ -31,6 +31,7 @@
     }
 
     .result-item__value{
+        width: fit-content;
         order: 0;
         font-size: 144px;
     }
