@@ -199,6 +199,8 @@ span {
     min-width: 0;
     height: 72px;
     background-color: var(--color-background-black);
+    transform: scaleX(0);
+    transform-origin: left center;
 }
 
 .result-item__name, .result-item__value{
@@ -209,11 +211,6 @@ span {
     display: flex;
     align-items: center;
     gap: 16px;
-}
-
-.section-results__content-rectangle {
-    transform: scaleX(0);
-    transform-origin: left center;
 }
 
 #section-results.is-visible-entities .section-results__content-rectangle {
