@@ -248,7 +248,7 @@ span {
 }
 
 #section-results.is-visible-entities .result-item__value {
-    animation: value-reveal 0.01s linear forwards;
+    animation: value-reveal 0.1s linear forwards;
 }
 
 #section-results.is-visible-entities .result-item:nth-child(1) .result-item__value {
