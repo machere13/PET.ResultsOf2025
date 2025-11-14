@@ -46,6 +46,9 @@ span {
     transform: translate(-50%, -50%);
     z-index: 1;
     pointer-events: none;
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 1 / 1;
 }
 
 #section-main {
