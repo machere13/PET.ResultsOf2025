@@ -10,6 +10,12 @@ html, body {
     -ms-overflow-style: none;
 }
 
+html ::selection,
+body ::selection {
+    background-color: var(--color-background-white);
+    color: var(--color-background-black);
+}
+
 body {
     cursor: var(--cursor-light);
 }
@@ -123,6 +129,11 @@ span {
     position: relative;
 
     --color-square: var(--color-background-black);
+}
+
+#section-results ::selection {
+    background-color: var(--color-background-black);
+    color: var(--color-background-white);
 }
 
 #section-results * {
