@@ -225,7 +225,7 @@ span {
     display: flex;
     align-items: center;
     gap: 16px;
-    overflow-x: hidden;
+    overflow: hidden;
     width: 100%;
 }
 
@@ -251,6 +251,10 @@ span {
 
 #section-results.is-visible-entities .result-item:nth-child(5) .section-results__content-rectangle {
     animation-delay: 1.3s;
+}
+
+#section-results.is-visible-entities .result-item:nth-child(6) .section-results__content-rectangle {
+    animation-delay: 1.5s;
 }
 
 .result-item__value{
@@ -280,6 +284,10 @@ span {
 
 #section-results.is-visible-entities .result-item:nth-child(5) .result-item__value {
     animation-delay: 1.91s;
+}
+
+#section-results.is-visible-entities .result-item:nth-child(6) .result-item__value {
+    animation-delay: 2.11s;
 }
 
 #section-activity {
